@@ -1,0 +1,30 @@
+---
+- name: 사용자 생성 및 관리
+  hosts: all  # 모든 호스트를 대상으로 지정
+  vars_files:
+    - userlist.yml
+    - pw.yml
+  gather_facts: false
+
+  tasks:
+    - name: dev, test 그룹에 developer 사용자 생성
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        groups: "{{ item.groups }}"
+        password: "{{ pw_develolper | password_hash('sha512') }}"
+        state: present
+      loop: "{{ users }}"
+      when:
+        - inventory_hostname in groups['dev'] or inventory_hostname in groups['test']
+        - item.username == 'develolper'
+
+    - name: prod 그룹에 manager 사용자 생성
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        groups: "{{ item.groups }}"
+        password: "{{ pw_manager | password_hash('sha512') }}"
+        state: present
+      loop: "{{ users }}"
+      when:
+        - inventory_hostname in groups['prod']
+        - item.username == 'manager'

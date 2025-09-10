@@ -1,0 +1,27 @@
+---
+{% if nb_vms_fetched is defined %}
+nb_vms:
+{% for vm in nb_vms_fetched %}
+  "{{ vm.value.name }}":
+    id: {{ vm.key }}
+{% if vm.value.description != "" %}
+    description: "{{ vm.value.description }}"
+{% endif %}
+{% if vm.value.comment is defined and vm.value.comment != "" %}
+    comments: "{{ vm.value.comment }}"
+{% endif %}
+    vm_role: {{ vm.value.role }}
+    primary_ip4: "{{ vm.value.primary_ip4.address | default("") }}"
+    primary_ip6: "{{ vm.value.primary_ip6.address | default("") }}"
+    site: {{ vm.value.site | default({}) }}
+    status: "{{ vm.value.status.value | default("") }}"
+    interfaces:
+{% for interface in dict_interfaces[vm.key] %}
+      {{ interface.name }}:
+{% if dict_ips[interface.ips] is defined %}
+        ip4: {{ dict_ips[interface.ips]|selectattr('family', 'eq', 4)|map(attribute='address')|list }}
+        ip6: {{ dict_ips[interface.ips]|selectattr('family', 'eq', 6)|map(attribute='address')|list }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}

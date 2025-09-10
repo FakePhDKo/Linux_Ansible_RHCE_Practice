@@ -1,0 +1,40 @@
+---
+- name: web content provide
+  hosts: webservers
+  become: true
+  gather_facts: false
+  tasks:
+  #########################################
+  # 1) /webdev
+  # 2) Symbolic Link: /webdev(origin) -> /var/www/html/webdev(new)
+  # 3) /webdev/index.html
+  # 4) /webdev -> SELinux fcontext
+  #########################################
+    - name: Create /webdev directory
+      ansible.builtin.file:
+        path: /webdev
+        state: directory
+        owner: apache
+        group: apache
+        mode: '2775'
+
+    - name: Create Symbolic Link
+      ansible.builtin.file:
+        src: /webdev
+        dest: /var/www/html/webdev
+        state: link
+
+    - name: Configure index.html
+      ansible.builtin.copy:
+        content: "WEBSERVER\n"
+        dest: /webdev/index.html
+        mode: '0644'
+
+    - name: SELinux config - /webdev
+      community.general.sefcontext:
+        target: '/webdev(/.*)?'
+        setype: httpd_sys_content_t
+        state: present
+
+    - name: SELinux update
+      ansible.builtin.command: restorecon -irv /webdev

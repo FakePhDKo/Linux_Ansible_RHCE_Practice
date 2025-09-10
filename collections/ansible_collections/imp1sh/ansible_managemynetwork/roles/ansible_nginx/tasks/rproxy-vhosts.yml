@@ -1,0 +1,36 @@
+---
+- name: "Installing nginx rproxy http item {{ rproxyitem.name }}"
+  ansible.builtin.template:
+    src: rproxy_http.conf.j2
+    dest: "{{ nginx_confdir }}/http.d/{{ rproxyitem.name }}.conf"
+    owner: "{{ nginx_confowner }}"
+    group: "{{ nginx_confgroup }}"
+  notify: 
+    - reload nginx
+- name: "Use manually defined cert"
+  ansible.builtin.set_fact:
+    rproxy_certname: "{{ rproxyitem.usecert }}"
+  when: rproxyitem.usecert is defined
+- name: "Use rproxy main name as certname"
+  ansible.builtin.set_fact:
+    rproxy_certname: "{{ rproxyitem.name }}"
+  when: rproxyitem.usecert is not defined
+- name: "Check if rproxy item has fullchain.pem"
+  ansible.builtin.stat:
+    path: "{{ nginx_certpath }}/{{ rproxy_certname }}/fullchain.pem"
+  register: rproxyitem_fullchain
+- name: "Check if rproxy item has privkey.pem"
+  ansible.builtin.stat:
+    path: "{{ nginx_certpath }}/{{ rproxy_certname }}/privkey.pem"
+  register: rproxyitem_privkey
+- name: "Installing nginx rproxy https item {{ rproxyitem.name }} if certs are available"
+  ansible.builtin.template:
+    src: rproxy_https.conf.j2
+    dest: "{{ nginx_confdir }}/http.d/{{ rproxyitem.name }}-tls.conf"
+    owner: "{{ nginx_confowner }}"
+    group: "{{ nginx_confgroup }}"
+  when:
+    - rproxyitem_fullchain.stat.exists
+    - rproxyitem_privkey.stat.exists
+  notify:
+    - reload nginx

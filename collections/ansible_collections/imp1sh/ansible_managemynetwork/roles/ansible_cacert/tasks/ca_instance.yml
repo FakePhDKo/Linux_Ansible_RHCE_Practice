@@ -1,0 +1,99 @@
+---
+# LOAD VARS FOR CA MANAGER HOST
+- name: "MMN cacert - Gather facts for delegated ca manager host"
+  ansible.builtin.setup:
+  delegate_to: "{{ cacert_ca_manager_host }}"
+  delegate_facts: true
+  run_once: true
+
+- name: "MMN cacert - Load OS vars for CA Manager host"
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ hostvars[cacert_ca_manager_host]['ansible_distribution'] }}.yml"
+        - "{{ hostvars[cacert_ca_manager_host]['ansible_os_family'] }}.yml"
+        - "default.yml"
+      paths:
+        - "vars"
+  delegate_to: "{{ cacert_ca_manager_host }}"
+  run_once: true
+
+- name: "MMN cacert - Build CA variables"
+  ansible.builtin.include_tasks: vars_paths_ca.yml
+
+# CA CERT PRIVATE KEY - CA MANAGER HOST
+- name: "MMN cacert - Manage CA key"
+  ansible.builtin.include_tasks: ca_instance_cakey.yml
+
+# CA CERT - CA MANAGER HOST
+- name: "MMN cacert - Manage CA cert"
+  ansible.builtin.include_tasks: ca_instance_cacert.yml
+
+
+
+# LOAD VARS FOR CA TARGET HOST
+- name: "MMN cacert - Load OS vars for target host"
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+        - "default.yml"
+      paths:
+        - "vars"
+  delegate_to: "{{ cacert_ca_manager_host }}"
+  run_once: true
+
+- name: "MMN cacert - Build CA variables"
+  ansible.builtin.include_tasks: vars_paths_ca_targethost.yml
+
+- name: "MMN cacert - Build servercert and key variables"
+  ansible.builtin.include_tasks: vars_paths_server.yml
+
+# CA CERT - TARGET HOST
+- name: "MMN cacert - Manage CA cert"
+  ansible.builtin.include_tasks: ca_instance_cacert_targethost.yml
+
+# SERVER CERT PRIVATE KEY - TARGET HOST
+- name: "MMN cacert - Manage server key on target host"
+  ansible.builtin.include_tasks: ca_instance_serverkey.yml
+
+# SERVER CERT PRIVATE KEY - ADDITIONAL HOSTS
+- name: "MMN cacert - Manage server key on additional hosts"
+  ansible.builtin.include_tasks: ca_instance_serverkey_additional_hosts.yml
+
+# SERVER CERT - TARGET HOST
+- name: "MMN cacert - Manage server cert on target host"
+  ansible.builtin.include_tasks: ca_instance_servercert.yml
+
+# SERVER CERT - ADDITIONAL HOSTS
+- name: "MMN cacert - Manage server cert on target host"
+  ansible.builtin.include_tasks: ca_instance_servercert_additional_hosts.yml
+
+
+
+# CLIENT CERT PRIVATE KEY
+- name: "MMN cacert - Manage client key"
+  ansible.builtin.include_tasks: ca_instance_clientkey.yml
+  loop: "{{ cacert_clientcerts }}"
+  loop_control:
+    loop_var: "cacert_clientcert"
+  when: cacert_clientcerts is defined
+
+# CLIENT CERT
+- name: "MMN cacert - Manage client certs"
+  ansible.builtin.include_tasks: ca_instance_clientcert.yml
+  loop: "{{ cacert_clientcerts }}"
+  loop_control:
+    loop_var: "cacert_clientcert"
+  when: cacert_clientcerts is defined
+
+
+
+- name: "MMN cacert - Update trust store"
+  become: True
+  ansible.builtin.command: "{{ cacert_command_updatetruststore }}"
+  when: ansible_distribution != 'OpenWrt'
+  # need more conditions, maybe handler, FIXME

@@ -1,0 +1,12 @@
+---
+- name: MMN users - Run live mode
+  ansible.builtin.include_tasks: 01live.yml
+  when: ( system_users_runimagebuilder is not defined ) or
+        ( system_users_runimagebuilder is defined and not system_users_runimagebuilder )
+
+- name: MMN users - Run imagebuilder mode
+  ansible.builtin.include_tasks: 01imagebuilder.yml
+  when: 
+    - system_users_runimagebuilder is defined
+    - system_users_runimagebuilder
+

@@ -1,0 +1,49 @@
+---
+- name: "MMN psqlserver - Wait for psqlserver to become reachable"
+  ansible.builtin.wait_for:
+    host: "{{ inventory_hostname }}"
+    port: 5432
+    delay: 5         # Wait 5 seconds before starting
+    timeout: 60      # Try for up to 60 seconds
+    state: started   # Wait for the port to be open
+      #- name: "MMN psqlserver - Second check for postgres to be ready"
+      #  containers.podman.podman_container_exec:
+      #    name: "{{ psqlserver_instance.key }}"
+      #    cmd: ["pg_isready", "-U", "postgres"]
+      #  register: psqlserver_pg_ready
+      #  retries: 30
+      #  delay: 5
+      #  until: psqlserver_pg_ready.rc == 0
+      #  changed_when: false
+- name: "MMN psqlserver - Provide postgres config for container"
+  ansible.builtin.template:
+    src: "{{ psqlserver_configtemplate }}"
+    dest: "{{ psqlserver_instance.value.configpath | default(psqlserver_configpath) }}/{{ psqlserver_instance.value.configname | default(psqlserver_configname) }}"
+    mode: 0600
+    owner: "999"
+    group: "999"
+  notify: restart postgres container
+- name: "MMN psqlserver - make sure pg_hby directories are there"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item.dest | basename }}"
+    mode: '0755'
+    owner: "999"
+    group: "999"
+  loop: "{{ psqlserver_instance.value.hba }}"
+  when: psqlserver_instance.value.hba is defined
+- name: "MMN psqlserver - Setup pg_hba"
+  community.postgresql.postgresql_pg_hba:
+    dest: "{{ item['dest']}}"
+    contype: "{{ item['contype'] }}"
+    create: "{{ item['create'] | default('false') }}"
+    users: "{{ item['users'] }}"
+    source: "{{ item['source'] | default(omit) }}"
+    databases: "{{ item['databases'] }}"
+    method: "{{ item['method'] }}"
+    state: "{{ item['state'] }}"
+    owner: "999"
+    group: "999"
+  loop: "{{ psqlserver_instance.value.hba }}"
+  when: psqlserver_instance.value.hba is defined
+  notify: reload postgres container

@@ -1,0 +1,2 @@
+icinga2_conf_confd: false
+icinga2_forcerecert: false

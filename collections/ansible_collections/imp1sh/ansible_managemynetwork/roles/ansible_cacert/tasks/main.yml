@@ -1,0 +1,18 @@
+---
+# PACKAGES
+- name: "MMN cacert - Set packages to install"
+  ansible.builtin.set_fact:
+    packages_installrole: "python3-cryptography"
+  when: ansible_distribution == 'OpenWrt'
+
+- name: "MMN cacert - Run package role"
+  ansible.builtin.include_role:
+    name: imp1sh.ansible_managemynetwork.ansible_packages
+  when: ansible_distribution == 'OpenWrt'
+
+# CERTS   
+- name: "MMN cacert - Manage CA key and cert"
+  ansible.builtin.include_tasks: ca_instance.yml
+  loop: "{{ cacert_cas | dict2items }}"
+  loop_control:
+    loop_var: "cacert_ca"

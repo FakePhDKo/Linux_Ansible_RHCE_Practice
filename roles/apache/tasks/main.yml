@@ -1,0 +1,34 @@
+---
+# tasks file for roles/apache
+- name: Install Packages
+  ansible.builtin.dnf:
+    name:
+      - httpd
+      - mod_ssl
+      - firewalld
+    state: present
+
+- name: Configure Web Server - Jinja2 Template
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: '0644'
+
+- name: Start Service
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - httpd
+    - firewalld
+
+- name: Firewall Add ports - http, https
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  loop:
+    - http
+    - https

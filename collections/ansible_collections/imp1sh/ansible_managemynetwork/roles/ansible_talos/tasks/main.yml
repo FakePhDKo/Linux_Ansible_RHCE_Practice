@@ -1,0 +1,10 @@
+---
+- name: MMN Talos - Install talosctl
+  ansible.builtin.include_tasks: 00_talosctl_install.yml
+
+- name: MMN Talos - Iterate over the list of defined clusters.
+  ansible.builtin.include_tasks: "clusters.yml"
+  loop: "{{ talos_clusters | dict2items }}"
+  loop_control:
+    loop_var: talos_cluster
+

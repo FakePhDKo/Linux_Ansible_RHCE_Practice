@@ -1,0 +1,97 @@
+server {
+{% if vhostitem.comment is defined %}
+        # {{ vhostitem.comment }}
+{% endif %}
+{% if vhostitem.userproxyitem_fromhost is defined and hostvars[vhostitem.userproxyitem_fromhost].rproxyitems[vhostitem.fqdn].comment is defined %}
+	# {{ hostvars[vhostitem.userproxyitem_fromhost].rproxyitems[vhostitem.fqdn].comment }}
+{% endif %}
+        listen 443;
+{% if vhostitem.ipaddress is defined %}
+        listen [{{ vhostitem.ipaddress }}]:443;
+{% else %}
+	listen [{{ nginx_defaultbindip }}]:443;
+{% endif %}
+    ssl_certificate {{ nginx_certpath }}/{{ vhost_certname }}/fullchain.pem;
+    ssl_certificate_key {{ nginx_certpath }}/{{ vhost_certname }}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+{% if vhostitem.vhostcipher is defined %}
+    ssl_ciphers {{ vhostitem.vhostcipher }};
+{% else %}
+    ssl_ciphers {{ nginx_vhostcipher }};
+{% endif %}
+    ssl_ecdh_curve secp384r1;
+    ssl_session_timeout 10m;
+    #ssl_session_cache shared:SSL:10m;
+    ssl_session_tickets off;
+    ssl_stapling {{ vhostitem.sslstapling | default('on', true) }};
+    ssl_stapling_verify {{ vhostitem.sslstaplingverify | default('on', true) }};
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+{% if vhostitem.altfqdn is defined and vhostitem.userproxyitem_fromhost is defined and hostvars[vhostitem.userproxyitem_fromhost].rproxyitems[vhostitem.fqdn].rproxyaltfqdn is not defined %}
+	server_name {{ vhostitem.fqdn }} {{ vhostitem.altfqdn }};
+{% elif vhostitem.altfqdn is defined and vhostitem.userproxyitem_fromhost is defined and hostvars[vhostitem.userproxyitem_fromhost].rproxyitems[vhostitem.fqdn].rproxyaltfqdn is defined %}
+	server_name {{ vhostitem.fqdn }} {{ vhostitem.altfqdn }} {{ hostvars[vhostitem.userproxyitem_fromhost].rproxyitems[vhostitem.fqdn].rproxyaltfqdn }};
+{% elif vhostitem.altfqdn is not defined and vhostitem.userproxyitem_fromhost is defined and hostvars[vhostitem.userproxyitem_fromhost].rproxyitems[vhostitem.fqdn].rproxyaltfqdn is defined %}
+	server_name {{ vhostitem.fqdn }} {{ hostvars[vhostitem.userproxyitem_fromhost].rproxyitems[vhostitem.fqdn].rproxyaltfqdn }};
+{% else %}
+{% if vhostitem.altfqdn is defined %}
+	server_name {{ vhostitem.fqdn }} {{ vhostitem.altfqdn }};
+{% else %}
+	server_name {{ vhostitem.fqdn }};
+{% endif %}
+{% endif %}
+{% if vhostitem.maxbodysize is defined %}
+	client_max_body_size {{ vhostitem.maxbodysize }};
+{% endif %}
+{% if vhostitem.nginx_autoindex is defined %}
+        autoindex {{ vhostitem.nginx_autoindex }};
+{% else %}
+        autoindex off;
+{% endif %}
+{% if vhostitem.authfile is defined %}
+    auth_basic "Restricted Access";
+    auth_basic_user_file "{{ vhostitem.authfile }}";
+{% endif %}
+        access_log /var/log/nginx/{{ vhostitem.fqdn }}-access.log;
+        error_log /var/log/nginx/{{ vhostitem.fqdn }}-error.log;
+{% if vhostitem.root is defined %}
+        root {{ vhostitem.root }};
+{% else %}
+        root {{ nginx_wwwdir }}/vhosts/{{ vhostitem.fqdn }};
+{% endif %}
+        location / {
+{% if vhostitem.enablewordpress is defined and vhostitem.enablewordpress %}
+		try_files $uri $uri/ /index.php?q=$uri&$args;
+{% endif %}
+                index index.html index.htm index.php;
+        }
+{% if vhostitem.ommitphplocation is true %}
+{% else %}
+        location ~ \.php$  {
+{% if ansible_os_family == 'FreeBSD' %}
+                include /usr/local/etc/nginx/fastcgi_params;
+		fastcgi_pass unix:/var/run/php-fpm.sock;
+{% elif ansible_os_family == 'Debian' %}
+		include /etc/nginx/fastcgi_params;
+		fastcgi_pass unix:/var/run/php-fpm.sock;
+{% else %}
+                include /etc/nginx/fastcgi_params;
+                fastcgi_pass unix:/run/nginx/www.sock;
+{% endif %}
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+{% endif %}
+{% if vhostitem.additionallocations is defined %}
+{% for locationitem in vhostitem.additionallocations %}
+location {{ locationitem.location }} {
+{% for locationitemelement in locationitem.options %}
+  {{ locationitemelement }}
+{% endfor %}
+}
+{% endfor %}
+{% endif %}
+}
+

@@ -1,0 +1,24 @@
+---
+- name: blivet install
+  hosts: dev
+  tasks:
+    - name: blivet install dnf
+      ansible.builtin.dnf:
+        name: python3-blivet
+        state: present
+
+- name: rhel-system-roles.storage lvm
+  hosts: dev
+  roles:
+    - name: fedora.linux_system_roles.storage
+      storage_pools:
+        - name: research
+          type: lvm
+          disks:
+            - /dev/sdb
+          volumes:
+            - name: data
+              size: 500m
+              mount_point: "/mnt/research"
+              fs_type: ext4
+              state: present

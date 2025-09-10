@@ -1,0 +1,39 @@
+---
+# Packages
+- name: packages
+  block:
+    - name: additional packages are needed for hamode
+      set_fact:
+        packages_installrole: "{{ ['keepalived', 'conntrackd', 'kmod-nf-conntrack', 'kmod-nf-conntrack6'] }}"
+    - name: Call packages role
+      ansible.builtin.include_role:
+        name: imp1sh.ansible_managemynetwork.ansible_packages
+  when: not openwrt_network_runimagebuilder | default(false)
+
+# Deploy config
+- name: deploy keepalived config
+  ansible.builtin.template:
+    src: keepalived.conf.j2
+    dest: "{{ openwrt_network_keepalived_deploypath }}/{{ openwrt_network_keepalived_deployfile }}"
+  notify: restart_keepalived
+- name: deploy keepalived uci config
+  ansible.builtin.template:
+    src: keepalived.j2
+    dest: "{{ openwrt_network_deploypath }}/{{ openwrt_network_keepalived_deployfile_uci }}"
+  notify: restart_keepalived
+- name: deploy conntrackd config
+  ansible.builtin.template:
+    src: conntrackd.conf.j2
+    dest: "{{ openwrt_network_conntrackd_deploypath }}/{{ openwrt_network_conntrackd_deployfile }}"
+  notify: restart_conntrackd
+
+# Services
+- name: Handling services
+  block:
+    - name: set service fact
+      ansible.builtin.set_fact:
+        openwrt_services_enabledrole: "{{ ['keepalived', 'conntrackd'] }}"
+    - name: Call services role
+      ansible.builtin.include_role:
+        name: imp1sh.ansible_managemynetwork.ansible_openwrtservices
+  when: not openwrt_network_runimagebuilder | default(false)

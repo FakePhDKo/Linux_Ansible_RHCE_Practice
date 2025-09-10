@@ -1,0 +1,9 @@
+# Provided by Ansible
+{% if systemdns_domainsearch is defined %}
+search {{ systemdns_domainsearch }}
+{% endif %}
+{% if systemdns_dnsservers is defined %}
+{% for dnsserver in systemdns_dnsservers %}
+nameserver {{ dnsserver }}
+{% endfor %}
+{% endif %}

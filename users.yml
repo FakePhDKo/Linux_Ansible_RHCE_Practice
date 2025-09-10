@@ -1,0 +1,31 @@
+---
+- name: Add users
+  hosts: dev, test
+  vars_files:
+    - userlist.yml
+    - pw.yml
+  gather_facts: false
+  tasks:
+    - name: Add Users - developer
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        groups: "{{ item.groups }}"
+        password: "{{ pw_develolper | password_hash('sha512') }}"    
+      loop: "{{ users }}"
+      when: item.username == 'developer'
+
+- name: Add users2
+  hosts: prod
+  vars_files:
+    - userlist.yml
+    - pw.yml
+  gather_facts: false
+  tasks:
+    - name: Add Users - developer
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        groups: "{{ item.groups }}"
+        password: "{{ pw_manager | password_hash('sha512') }}"    
+      loop: "{{ users }}"
+      when: item.username == 'manager'
+

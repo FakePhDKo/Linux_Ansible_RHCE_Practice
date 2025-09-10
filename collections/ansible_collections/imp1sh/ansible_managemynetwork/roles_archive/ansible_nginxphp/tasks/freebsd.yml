@@ -1,0 +1,26 @@
+- name: copy nginx.conf
+  template:
+          src: freebsdnginx.conf.j2 
+          dest: /usr/local/etc/nginx/nginx.conf
+          owner: root
+          group: wheel
+          mode: '0744'
+- name: create vhost root dir
+  file:
+          path: "/usr/local/www/{{ item.fqdn }}"
+          state: directory
+          mode: '0750'
+          owner: "{{ nginxuser }}"
+          group: "{{ nginxgroup }}"
+  when: nginxphp_vhost is defined
+  loop: "{{ nginxphp_vhost }}"
+- name: copy vhost template
+  template:
+          src: vhostnginx.conf
+          dest: "/usr/local/etc/nginx/conf.d/{{ item.fqdn }}.conf"
+          owner: root
+          group: wheel
+          mode: '0744'
+  when: nginxphp_vhost is defined
+  loop: "{{ nginxphp_vhost }}"
+  notify: restart nginx

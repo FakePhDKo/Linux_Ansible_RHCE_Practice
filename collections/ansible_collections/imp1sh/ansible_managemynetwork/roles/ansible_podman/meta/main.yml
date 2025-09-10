@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  role_name: ansible_podman
+  author: Jochen Demmer
+  description: Deploys podman containers in an IaC way
+  company: libcom.de
+  issue_tracker_url: https://github.com/imp1sh/ansible_managemynetwork/issues
+  license: BSD-3-Clause
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Debian
+      versions:
+        - "bookworm"
+        - "bullseye"
+  galaxy_tags: [podman, container, docker]
+dependencies: []

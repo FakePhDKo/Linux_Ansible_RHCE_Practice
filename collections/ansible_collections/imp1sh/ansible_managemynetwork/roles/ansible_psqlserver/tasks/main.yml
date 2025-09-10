@@ -1,0 +1,45 @@
+---
+- name: "MMN psqlserver - non container tasks"
+  when:
+    - psqlserver_containermode is not defined or (psqlserver_containermode is defined and not psqlserver_containermode)
+  block:
+    - name: MMN psqlserver - include OS vars
+      include_vars: "{{ ansible_distribution }}.yml"
+    - name: MMN psqlserver - Run package role
+      ansible.builtin.include_role:
+        name: imp1sh.ansible_managemynetwork.ansible_packages
+      vars:
+        packages_installrole: "{{ psqlserver_packages }}"
+    - name: "MMN psqlserver - Iterate over psqlserver_instances"
+      ansible.builtin.include_tasks:
+        file: notcontainer.yml
+      loop: "{{ psqlserver_instances | dict2items }}"
+      loop_control:
+        loop_var: "psqlserver_instance"
+
+- name: "MMN psqlserver - Container tasks"
+  when: 
+    - psqlserver_containermode is defined 
+    - psqlserver_containermode
+  block:
+    - name: MMN psqlserver - include Container vars
+      include_vars: "Container.yml"
+    - name: "MMN psqlserver - Container tasks"
+      ansible.builtin.include_tasks:
+        file: container.yml
+      loop: "{{ psqlserver_instances | dict2items }}"
+      loop_control:
+        loop_var: "psqlserver_instance"
+
+# make this optional, since borgmatic also makes db backups
+#- name: "Setup full sql backup"
+#  cron:
+#    name: "postgresql full backup"
+#    minute: "24"
+#    hour: "3"
+#    user: "postgres"
+#    job: "pg_dumpall -f /var/db/postgres/fullbackup.sql"
+    #- name: Install phppgadmin
+    #  ansible.builtin.package:
+    #    name: adminer
+    #    state: present

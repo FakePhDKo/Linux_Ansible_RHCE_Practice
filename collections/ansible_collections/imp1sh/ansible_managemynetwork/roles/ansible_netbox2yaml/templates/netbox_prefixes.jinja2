@@ -1,0 +1,22 @@
+---
+{% if nb_prefixes is defined %}
+nb_prefixes:
+{% for key, value in nb_prefixes.items() %}
+{% if key %}
+  {{ key }}:
+{% if value.4 is defined %}
+    "4":
+      prefix: {{ value.4.prefix }}
+{% endif %}
+{% if value.6 is defined %}
+    "6":
+{% if value.6.prefix.gua is defined %}
+      gua: {{ value.6.prefix.gua }}
+{% endif %}
+{% if value.6.prefix.ula is defined %}
+      ula: {{ value.6.prefix.ula }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}

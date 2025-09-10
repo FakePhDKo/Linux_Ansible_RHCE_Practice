@@ -1,0 +1,49 @@
+---
+- name: 1. synthesize practice
+  hosts: all
+  tasks:
+    - name: Start Messages
+      ansible.builtin.debug:
+        msg: "[ OK ] synthesize practice"
+
+- name: 1) Intsall Packages
+  ansible.builtin.import_playbook: packages.yml
+
+- name: 2) Use redhat system role 
+  ansible.builtin.import_playbook: time_sync2.yml
+
+- name: 3) Web Server Configure and Check
+  ansible.builtin.import_playbook: webservers.yml
+
+- name: 4) Create role and use
+  ansible.builtin.import_playbook: newrole.yml
+
+- name: 5) Create LVM and use
+  ansible.builtin.import_playbook: lv.yml
+
+- name: 5-1) Create LVM and use(redhat system role version)
+  ansible.builtin.import_playbook: lv2.yml
+
+- name: 6) Configure hosts file
+  ansible.builtin.import_playbook: hosts.yml
+
+- name: 7) Change File Content
+  ansible.builtin.import_playbook: issue.yml
+
+- name: 8) Create Web Content Directory
+  ansible.builtin.import_playbook: webcontent.yml
+
+- name: 9) Create HWreport
+  ansible.builtin.import_playbook: hwreport.yml
+
+- name: 10) Create User Account
+  ansible.builtin.import_playbook: users.yml
+
+- name: 11) Configure FTP server
+  ansible.builtin.import_playbook: ftp.yml
+
+- name: 12) Change System Run-Level
+  ansible.builtin.import_playbook: target.yml
+
+- name: 13) Regular Job
+  ansible.builtin.import_playbook: cronjob.yml

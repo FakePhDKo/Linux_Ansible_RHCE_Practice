@@ -1,0 +1,17 @@
+---
+# tasks file for ansible_openwrtbatmanadv
+- name: make sure deploypath is present
+  ansible.builtin.file:
+    path: "{{ openwrt_batmanadv_deploypath }}"
+    state: directory
+- name: initialize packages_installimagebuilder
+  set_fact:
+    packages_installimagebuilder: []
+  when:
+    - packages_installimagebuilder is not defined
+    - openwrt_batmanadv_runimagebuilder | default(false)
+- name: merge role packages into packages_installimagebuilder
+  set_fact:
+    packages_installimagebuilder: "{{ packages_installimagebuilder + packages_installrole }}"
+  when: openwrt_batmanadv_runimagebuilder | default(false)
+

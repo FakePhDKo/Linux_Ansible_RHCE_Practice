@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  role_name: ansible_openwrtsqm
+  author: Jochen Demmer
+  description: configures sqm QoS for OpenWrt
+  company: libcom.de
+  issue_tracker_url: https://github.com/imp1sh/ansible_managemynetwork/issues
+  license: BSD-3-Clause
+  min_ansible_version: "2.9"
+  platforms:
+    - name: OpenWRT
+      versions:
+        - "21.02"
+        - "22.03"
+        - "23.05"
+        - "24.10"
+  galaxy_tags: [openwrt, lede, sqm, qos, traffic shaping, bufferbloat]
+dependencies:
+  - role: imp1sh.ansible_managemynetwork.ansible_packages
+    vars:
+      packages_installrole:
+        - sqm-scripts
+        - luci-app-sqm

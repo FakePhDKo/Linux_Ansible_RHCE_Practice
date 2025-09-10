@@ -1,0 +1,63 @@
+---
+- name: LVM Tasks
+  hosts: webservers
+  gather_facts: true
+  tasks:
+    #####################################
+    # 0) 전제 조건
+    #   * 에러1: /dev/sdb 디스크 없으면
+    #       => The device does not exit
+    #   * 에러2: /dev/sdb1 파티션 작업 중 에러가 발생
+    #       => Size not Enough
+    # 1) 파티션
+    #   * 파티션 생성: /dev/sdb1
+    #   * LVM 작업:
+    #       - PV: /dev/sdb1(800MiB)
+    #       - VG: research => lvg
+    #       - LV: data(500MiB) => lvol
+    # 2) 파일시스템: ext4 => filesystem
+    # 3) 마운트: /mnt/research, /etc/fstab => mount
+    ######################################
+    - name: error messages - sdb disk check
+      ansible.builtin.fail:
+        msg: "The device does not exist"
+      when: ansible_devices.sdb is not defined
+
+    - name: Partition add - /dev/sdb1
+      block:
+        - name: Partition task
+          community.general.parted:
+            device: /dev/sdb
+            number: 1
+            part_start: 1MiB
+            part_end: 800MiB
+            flags: [ lvm ]
+            state: present
+      rescue:
+        - name: Parition Fail
+          ansible.builtin.debug:
+            msg: Size not Enough
+
+      
+    - name: VG Create
+      community.general.lvg:
+        vg: research
+        pvs: /dev/sdb1
+
+    - name: LV Create
+      community.general.lvol:
+        vg: research
+        lv: data
+        size: 500m
+
+    - name: FileSystem - ext4
+      community.general.filesystem:
+        dev: /dev/research/data
+        fstype: ext4
+
+    - name: Mount - /mnt/research
+      ansible.posix.mount:
+        path: /mnt/research
+        src: /dev/research/data
+        state: mounted
+        fstype: ext4

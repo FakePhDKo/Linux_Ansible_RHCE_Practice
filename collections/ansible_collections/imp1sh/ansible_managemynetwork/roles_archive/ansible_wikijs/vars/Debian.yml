@@ -1,0 +1,7 @@
+---
+wikijs_packages:
+  - "unzip"
+  - "tar"
+  - "nodejs"
+nodejsbinpath: "/usr/bin/node"
+wikijs_restartservice: "restart wikijs Systemd"

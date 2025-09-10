@@ -1,0 +1,67 @@
+---
+- name: MMN borgmatic - Borgmatic requirements
+  ansible.builtin.package:
+    name: "{{ borgmatic_package_requirements }}"
+    state: present
+  when: borgmatic_package_requirements is defined
+
+# PACKAGE MANAGER
+- name: MMN borgmatic - Package manager block
+  block:
+    - name: MMN borgmatic - Borg backup via package manager
+      ansible.builtin.package:
+        name: "{{ borgmatic_packagename_borg }}"
+        state: "{{ borgmatic_package_state }}"
+    - name: MMN borgmatic - Borgmatic via package manager
+      ansible.builtin.package:
+        name: "{{ borgmatic_packagename_borgmatic }}"
+        state: "{{ borgmatic_package_state }}"
+  when: not borgmatic_via_pip
+
+# PIP 
+- name: MMN borgmatic - pip block 
+  block:
+    - name: MMN borgmatic - Install pip for pip installation
+      ansible.builtin.package:
+        name: "{{ borgmatic_pip_package }}"
+        state: present
+    - name: MMN borgmatic - Install borgmatic via pip
+      ansible.builtin.pip:
+        name: borgmatic
+        virtualenv: "{{ borgmatic_venvdir }}"
+          #- name: Install pyfuse3 for mounting via fuse
+          #  ansible.builtin.pip:
+          #    name: pyfuse3
+          #    virtualenv: "{{ borgmatic_venvdir }}"
+    - name: MMN borgmatic - Install borg via pip
+      ansible.builtin.pip:
+        name: borgbackup
+        virtualenv: "{{ borgmatic_venvdir }}"
+  when: borgmatic_via_pip
+
+# Apprise
+- name: MMN borgmatic - Apprise block
+  block:
+    - name: MMN borgmatic - Install apprise via pip
+      ansible.builtin.pip:
+        name: "{{ borgmatic_packageapprisepip  }}"
+        virtualenv: "{{ borgmatic_venvdir }}"
+      when: borgmatic_apprise_via_pip
+  when: borgmatic_apprise
+
+# WRAPPER SCRIPT FOR EXECUTION borgmatic_env
+- name: MMN borgmatic - Deploy wrapper script to use venv
+  ansible.builtin.template:
+    src: borgmatic_venv_wrapper.sh.jinja2
+    dest: "{{ borgmatic_venv_wrapper }}"
+    mode: 0740
+    owner: root
+
+# CREATE CONFIG DIR
+- name: MMN borgmatic - Make sure borgmatic config dir exists
+  file:
+    path: "{{ borgmatic_pathconfig }}"
+    state: directory
+    owner: "{{ borgmatic_pathconfig_owner }}"
+    group: "{{ borgmatic_pathconfig_group }}"
+    mode: 0700

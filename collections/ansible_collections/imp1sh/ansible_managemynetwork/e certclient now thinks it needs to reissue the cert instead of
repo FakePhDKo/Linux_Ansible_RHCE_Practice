@@ -1,0 +1,263 @@
+[33mcommit a904ce141089ee9b498d20d56f18703f3a681fe3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 4e5d873 8506aff
+Author: junicast <jochen@winteltosh.de>
+Date:   Fri Sep 5 07:43:00 2025 +0200
+
+    Merge pull request #20 from Bartosz-lab/patch-1
+    
+    ACME corrections to works also with 24.10
+
+[33mcommit 4e5d873adf5ac21a77ce75ca5fcc4d6e8004cebd[m
+Merge: e9cb60e 650335f
+Author: junicast <jochen@winteltosh.de>
+Date:   Fri Sep 5 07:41:05 2025 +0200
+
+    Merge pull request #22 from Bartosz-lab/patch-3
+    
+    Add imagebuilder check for prometheus node exporter service restart
+
+[33mcommit 650335f3ba8802bf94c421d342dc767badabe4b9[m
+Author: Bartosz Cieślik <73119351+Bartosz-lab@users.noreply.github.com>
+Date:   Tue Sep 2 20:38:18 2025 +0200
+
+    Add imagebuilder check for prometheus node exporter service restart
+
+[33mcommit e9cb60ed1356d7489c8965bb5b710348210a36c5[m
+Merge: 8891243 08f2a81
+Author: junicast <jochen@winteltosh.de>
+Date:   Fri Aug 22 12:58:42 2025 +0200
+
+    Merge pull request #21 from Bartosz-lab/patch-2
+    
+    Add subnets for zone in firewall file generation
+    ty for your contribution
+
+[33mcommit 08f2a818ad4e0b317e3b7d1c4ea1211713d2302d[m
+Author: Bartosz Cieślik <73119351+Bartosz-lab@users.noreply.github.com>
+Date:   Thu Aug 21 21:32:51 2025 +0200
+
+    Add subnets for zone in firewall file generation
+
+[33mcommit 8506affbcfeadb186a3d73702edfe34d4929e9fa[m
+Author: Bartosz Cieślik <73119351+Bartosz-lab@users.noreply.github.com>
+Date:   Wed Aug 20 20:05:42 2025 +0200
+
+    ACME corrections to works also with 24.10
+
+[33mcommit 88912430cefcf6f500ed2f245e3ff067047f34e0[m
+Merge: 72818e3 1e5ded5
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sun Aug 10 19:36:37 2025 +0200
+
+    Merge branch 'main' of github.com:imp1sh/ansible_managemynetwork
+
+[33mcommit 72818e38f12f383e97b62c24c8cc36cbb99a251a[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sun Aug 10 19:36:07 2025 +0200
+
+    add podman-docker package for socket support
+
+[33mcommit abd28c214cdbbb9925a83863db63cff566de9807[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sun Aug 10 19:35:31 2025 +0200
+
+    added some more database options for borgmatic
+
+[33mcommit b78fbff399fb23a60fa167443c8850851851949d[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sun Aug 10 19:30:46 2025 +0200
+
+    fix for systemd timer task
+
+[33mcommit 8c3feeb4abba6472f99a17946392bc7b1fb36915[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sun Aug 10 19:30:17 2025 +0200
+
+    add lexicon hook script
+
+[33mcommit 1e5ded532caa3ffcbdae5628bc82a96f4ab3b374[m
+Merge: 244f53f f751e1e
+Author: junicast <jochen@winteltosh.de>
+Date:   Fri Aug 1 07:36:15 2025 +0200
+
+    Merge pull request #16 from varac/dsl
+    
+    add dsl options
+    https://openwrt.org/docs/guide-user/network/wan/isp-configurations?s%5B%5D=dsl
+
+[33mcommit 244f53f87c336e18b616dad186342ea14f2eb7ef[m
+Merge: a52c8b3 30a3424
+Author: junicast <jochen@winteltosh.de>
+Date:   Fri Aug 1 07:34:17 2025 +0200
+
+    Merge pull request #18 from varac/add_led_options
+    
+    Add system.led option "mode" and "dev"
+
+[33mcommit a52c8b35c958f1ba5268eae9b9a42e819cc2cd6c[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sun Jul 27 09:46:44 2025 +0200
+
+    add podman socket and enable
+
+[33mcommit f751e1e01676c8886eb33dd54e4b010e549512b8[m
+Author: Varac <varac@varac.net>
+Date:   Sat Jul 26 11:49:29 2025 +0200
+
+    Add missing pppoe options
+    
+    Documentation to theses options:
+    
+    https://openwrt.org/docs/guide-user/network/wan/isp-configurations?s#vdsl1
+
+[33mcommit 30a3424776d2013fcfe702449174c9e5321da949[m
+Author: Varac <varac@varac.net>
+Date:   Sat Jul 26 10:41:07 2025 +0200
+
+    Add system.led option "mode" and "dev"
+    
+    https://openwrt.org/docs/guide-user/base-system/led_configuration#network_activity
+
+[33mcommit 7d964cd076b1b7d63413f6671ad733e2744e6552[m
+Author: Varac <varac@varac.net>
+Date:   Thu Jul 24 22:16:57 2025 +0200
+
+    add dsl options
+
+[33mcommit ff48f3a91d634b8cfbbdf472d48c84e32f390803[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:47:50 2025 +0200
+
+    started a new role for sway windows manager
+    role is empty though for now
+    will work on this later
+
+[33mcommit 5e4e64e50d6fa3460b0d40adb3b85ee17a7623a6[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:45:28 2025 +0200
+
+    some minor updaes for psqlserver role
+
+[33mcommit 491c4b8a8ad5940e838134c0f654fa523a8d0e77[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:44:11 2025 +0200
+
+    just a newline
+
+[33mcommit f1e15b53a3eecf0b39299b707e15302e3ee82b6a[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:42:26 2025 +0200
+
+    updated default openwrt x86 image to 24.10.2 for imagebuilder
+
+[33mcommit c6b416f421a0ddb1ad2eaf387388234cedb25b0e[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:41:01 2025 +0200
+
+    add lexicon as requirement
+    lexicon is a dns update library
+
+[33mcommit c4614bb55a9018bf605cf6f911d51be110e3d836[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:40:27 2025 +0200
+
+    updated README
+
+[33mcommit 78cd27d650b96dd91b2198e3c16ba0a59652d25a[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:40:15 2025 +0200
+
+    make sure key dir is present
+
+[33mcommit e8fbb09321f330829d324dd429c5b85926142418[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat Jul 26 07:39:08 2025 +0200
+
+    some updates to podman role for plugins and psql
+
+[33mcommit cffae4dd57c3f0a84ea2f98276f4f9a2a4339941[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sun Jul 13 09:52:16 2025 +0200
+
+    checks missing for uhttpd role
+
+[33mcommit 84ce59716623cd0c370fa72b44aea856899f9d87[m
+Merge: 879d665 cedb324
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Fri Jul 11 07:45:19 2025 +0200
+
+    Merge branch 'main' of github.com:imp1sh/ansible_managemynetwork
+
+[33mcommit 879d6656a6141e4d6b5366cd0f2b3d554c83a323[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Fri Jul 11 07:45:07 2025 +0200
+
+    some updates but unfinished
+
+[33mcommit 237b1adb12c31dc68f6cbfa4a590738e7cfd224c[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Fri Jul 11 07:37:23 2025 +0200
+
+    updated readme
+
+[33mcommit cedb3241c2bebcbba1cc314156e9688e68411889[m
+Merge: eb4c64d e1c7461
+Author: junicast <jochen@winteltosh.de>
+Date:   Fri May 16 14:26:49 2025 +0200
+
+    Merge pull request #12 from pygoubet/fix_redirect_to_https
+    
+    Make Redirect to HTTPS working
+
+[33mcommit eb4c64d7ce8e6711dd167e9a2aaacc7dddf9316d[m
+Merge: ed48719 8065983
+Author: junicast <jochen@winteltosh.de>
+Date:   Fri May 16 14:23:46 2025 +0200
+
+    Merge pull request #13 from trinitronx/fix-openwrt-bash-path
+    
+    ansible_users: Fix OpenWrt /bin/bash path
+
+[33mcommit 8065983c350530280bda12f3270575d56f72abff[m
+Author: James Cuzella <james.cuzella@lyraphase.com>
+Date:   Wed May 14 17:43:24 2025 -0600
+
+    ansible_users: Fix OpenWrt /bin/bash path
+
+[33mcommit e1c746171bbb8c0cc685069778d41abce2e647e2[m
+Author: pygoubet <pyg@goubet.eu>
+Date:   Mon May 12 21:23:29 2025 +0200
+
+    Make Redirect to HTTPS working
+
+[33mcommit ed48719314fb18074e8492b590d9a92e738b7814[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat May 3 13:00:15 2025 +0200
+
+    mini update
+
+[33mcommit 89fdbee08add2854c79427f60c3bc19504ecdd90[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat May 3 12:59:18 2025 +0200
+
+    syntax error
+
+[33mcommit a70469dae7c8b0f930152410f8b97c22d97f8ad3[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat May 3 12:57:45 2025 +0200
+
+    added borgbase example
+
+[33mcommit c3f560e9872b583e79d17ac58e55dbfc5b353d5c[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat May 3 12:55:10 2025 +0200
+
+    forgot files
+
+[33mcommit 424ec6fe51b4cabe4f872181ba0b4d3221cacdee[m
+Author: Jochen Demmer <jochen@winteltosh.de>
+Date:   Sat May 3 12:52:52 2025 +0200
+
+    - Add borgbase repo type (very easy integration with borgbase backups)
+    - borgmatic can now also be run as a container in podman
+    see README for further infor

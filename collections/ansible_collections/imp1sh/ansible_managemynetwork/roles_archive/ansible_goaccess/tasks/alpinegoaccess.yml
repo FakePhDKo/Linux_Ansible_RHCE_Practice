@@ -1,0 +1,4 @@
+- name: Install apk packages
+  ansible.builtin.package:
+    name: goaccess
+    state: present

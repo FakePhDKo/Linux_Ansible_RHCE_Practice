@@ -1,0 +1,7 @@
+---
+- name: New Role
+  hosts: webservers
+  tasks:
+    - name: Apache Role Test
+      ansible.builtin.import_role:
+        name: apache

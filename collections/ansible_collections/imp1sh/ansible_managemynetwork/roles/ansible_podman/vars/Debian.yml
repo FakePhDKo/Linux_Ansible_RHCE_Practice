@@ -1,0 +1,9 @@
+---
+podman_packages:
+  - "podman"
+  - "podman-docker"
+  - "conmon"
+  - "aardvark-dns"
+  - "netavark"
+  - "iptables"
+# iptables only needed because of bug in Debian

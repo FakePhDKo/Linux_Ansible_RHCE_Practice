@@ -1,0 +1,43 @@
+---
+- name: Configure the Web Server
+  hosts: webservers
+  gather_facts: true
+  tasks:
+  #########################################
+  # 1) Install the Packages - httpd, mod_ssl, firewalld
+  # 2) Configure the services
+  #   * /var/www/html/hello.html
+  # 3) Start the services - httpd, firewalld
+  # 4) Open the ports - http, https
+  #########################################
+    - name: Install the packages - httpd, mod_ssl, firewalld
+      ansible.builtin.dnf:
+        name:
+          - httpd
+          - mod_ssl
+          - firewalld
+        state: present
+
+    - name: Configure the services
+      ansible.builtin.copy:
+        content: "Hello World from {{ ansible_fqdn }}"
+        dest: /var/www/html/hello.html
+
+    - name: Start the services - httpd, firewalld
+      ansible.builtin.systemd:
+        service: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - httpd
+        - firewalld
+
+    - name: Open the ports - http, https
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop:
+        - http
+        - https

@@ -1,0 +1,13 @@
+object Host "{{ item['name'] }}" {
+{% if item['address'] is defined %}
+  address = "{{ item['address'] }}"
+{% elif item['address6'] is defined %}
+  address6 = "{{ item['address6'] }}"
+{% endif %}
+{% if item['hostvars'] is defined %}
+{% for hostvar in item['hostvars'] %}
+  vars.{{ hostvar['key'] }} = "{{ hostvar['value'] }}"
+{% endfor %}
+{% endif %}
+  import "generic-host"
+}

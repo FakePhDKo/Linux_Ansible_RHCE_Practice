@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  role_name: ansible_hostname
+  author: Jochen Demmer
+  description: Sets the hostname on the target system to the inventory_hostname
+  company: libcom.de
+  issue_tracker_url: https://github.com/imp1sh/ansible_managemynetwork/issues
+  license: BSD-3-Clause
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Debian
+      versions:
+        - "bookworm"
+        - "bullseye"
+    - name: FreeBSD
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: RedHat
+      versions:
+        - all
+  galaxy_tags: [hostname, hostnamectl]
+dependencies: []

@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  role_name: ansible_users
+  author: Jochen Demmer
+  description: Handles users for posix systems
+  company: libcom.de
+  issue_tracker_url: https://github.com/imp1sh/ansible_managemynetwork/issues
+  license: BSD-3-Clause
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Debian
+    - name: Ubuntu
+    - name: FreeBSD
+  galaxy_tags: [user, users, posix]
+dependencies: []

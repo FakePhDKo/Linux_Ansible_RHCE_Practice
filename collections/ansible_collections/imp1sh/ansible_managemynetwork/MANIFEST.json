@@ -1,0 +1,37 @@
+{
+ "collection_info": {
+  "namespace": "imp1sh",
+  "name": "ansible_managemynetwork",
+  "version": "0.8.0",
+  "authors": [
+   "Jochen Demmer <jochen@libcom.de>"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "server",
+   "system",
+   "management",
+   "freebsd",
+   "debian",
+   "network",
+   "services",
+   "openwrt"
+  ],
+  "description": "A collection of several roles that I need to manage my network. You can use it as well.",
+  "license": [],
+  "license_file": "LICENSE",
+  "dependencies": {},
+  "repository": "https://github.com/imp1sh/ansible_managemynetwork",
+  "documentation": "https://github.com/imp1sh/ansible_managemynetwork/blob/main/README.md",
+  "homepage": "https://wiki.junicast.de",
+  "issues": "https://github.com/imp1sh/ansible_managemynetwork/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "0f6353eab480ef6fccb60cd301ba9d91b6ca6ba54e5d096d261cae795aad6fb3",
+  "format": 1
+ },
+ "format": 1
+}

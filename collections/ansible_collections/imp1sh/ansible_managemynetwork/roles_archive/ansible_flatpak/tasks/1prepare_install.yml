@@ -1,0 +1,9 @@
+---
+# Prepare first phase
+- name: Merge flatpak_install from all groups this host is a member of
+  ansible.builtin.set_fact:
+    flatpak_installmergedgroup: "{{ flatpak_installgroup.keys() | list | intersect(group_names) | map('extract', flatpak_installgroup) | list | flatten }}"
+  when: flatpak_installgroup is defined
+- name: combine lists into flatpak_install var
+  ansible.builtin.set_fact: 
+    flatpak_install: "{{ [flatpak_installmergedgroup, flatpak_installhost, flatpak_installrole] | select('defined') | flatten | unique }}"

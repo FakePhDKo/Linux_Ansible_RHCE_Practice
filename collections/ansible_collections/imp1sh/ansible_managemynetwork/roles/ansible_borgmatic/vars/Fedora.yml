@@ -1,0 +1,33 @@
+borgmatic_packagename_borg: "borgbackup"
+borgmatic_packagename_borgmatic: "borgmatic"
+borgmatic_package_requirements: 
+  - python3
+  - python3-devel
+  - python3-pip
+  - python3-virtualenv
+  - libacl-devel
+  - libacl
+  - openssl-devel
+  - lz4-devel
+  - libzstd-devel
+  - xxhash-devel
+  - pkgconf
+  - python3-pkgconfig
+  - gcc
+  - gcc-c++
+  - redhat-rpm-config
+borgmatic_pathconfig: "/etc/borgmatic"
+borgmatic_pathconfig_owner: "root"
+borgmatic_pathconfig_group: "root"
+borgmatic_fileconfig: "config.yaml"
+borgmatic_fileconfig_owner: "root"
+borgmatic_fileconfig_group: "root"
+borgmatic_commandname_borgmatic: "borgmatic"
+borgmatic_file_sshknownhosts: "/etc/ssh/ssh_known_hosts"
+borgmatic_pathcron: "/etc/cron.d"
+borgmatic_pip_package: "python3-pip"
+borgmatic_default_srcdirs:
+  - "/etc"
+  - "/opt"
+  - "/home"
+  - "/root"

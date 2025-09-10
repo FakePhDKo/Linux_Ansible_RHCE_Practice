@@ -1,0 +1,20 @@
+---
+- name: Install the Packages
+  hosts: dev,test,prod
+  tasks:
+    - name: Install the packages - php, mariadb
+      ansible.builtin.yum:
+        name:
+          - php
+          - mariadb
+        state: present
+
+- name: Install the packages 2
+  hosts: dev
+  tasks:
+    - name: Install the packages - @Development Tools, iotop
+      ansible.builtin.yum:
+        name:
+          - "@Development Tools"
+          - iotop
+        state: present

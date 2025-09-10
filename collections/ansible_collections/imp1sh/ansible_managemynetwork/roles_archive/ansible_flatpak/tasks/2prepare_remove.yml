@@ -1,0 +1,9 @@
+---
+# Prepare first phase
+- name: Merge flatpak_remove from all groups this host is a member of
+  ansible.builtin.set_fact:
+    flatpak_removemergedgroup: "{{ flatpak_removegroup.keys() | list | intersect(group_names) | map('extract', flatpak_removegroup) | list | flatten }}"
+  when: flatpak_removegroup is defined
+- name: combine lists into flatpak_remove var
+  ansible.builtin.set_fact: 
+    flatpak_remove: "{{ [flatpak_removemergedgroup, flatpak_removehost, flatpak_removerole] | select('defined') | flatten | unique }}"

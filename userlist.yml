@@ -1,0 +1,6 @@
+---
+users:
+  - username: developer
+    groups: daemon
+  - username: manager
+    groups: adm

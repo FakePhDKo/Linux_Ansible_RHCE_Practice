@@ -1,0 +1,26 @@
+# PSQL
+- name: "MMN Podman - Plugin psql"
+  ansible.builtin.include_tasks:
+    file: plugin_psql.yml
+  when:
+    - podman_container_plugin_psql is defined
+      # Below filter is needed so the plugin only runs when the choosen container images are related to the plugin
+    - podman_containers | map(attribute='name') | intersect(podman_container_plugin_psql) | length > 0
+
+# BORGMATIC
+- name: "MMN Podman - Plugin borgmatic"
+  ansible.builtin.include_tasks:
+    file: plugin_borgmatic.yml
+  when:
+    - podman_container_plugin_borgmatic is defined
+      # Below filter is needed so the plugin only runs when the choosen container images are related to the plugin
+    - podman_containers | map(attribute='name') | intersect(podman_container_plugin_borgmatic) | length > 0
+
+# PDNSAUTH
+- name: "MMN Podman - Plugin pdnsauth"
+  ansible.builtin.include_tasks:
+    file: plugin_pdnsauth.yml
+  when:
+    - podman_container_plugin_pdnsauth is defined
+      # Below filter is needed so the plugin only runs when the choosen container images are related to the plugin
+    - podman_containers | map(attribute='name') | intersect(podman_container_plugin_pdnsauth) | length > 0
