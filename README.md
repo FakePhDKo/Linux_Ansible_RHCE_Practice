@@ -1,4 +1,4 @@
-Ansible RHCE Practice
+# Ansible RHCE Practice📝
 📖 프로젝트 개요
 이 프로젝트는 Red Hat Certified Engineer (RHCE) 시험의 핵심 주제들을 Ansible을 활용해 자동화한 실습 코드 저장소입니다. 리눅스 시스템 관리의 다양한 작업을 플레이북으로 구현하고, Git을 통해 효과적으로 관리하는 방법을 익힙니다.
 
@@ -16,19 +16,31 @@ Ansible RHCE Practice
 
 작업 제어: when 조건문, loop 구문, block/rescue/always를 활용한 오류 처리
 
+🚀 프로젝트 기술 스택
 📂 주요 디렉터리 및 파일
-ansible.cfg: Ansible의 전역 설정 파일. 인벤토리 및 역할 경로 지정.
-
-inventory: 관리 대상 호스트 목록과 그룹을 정의하는 인벤토리 파일.
-
-roles/: 재사용 가능한 작업 단위인 Ansible 역할들이 저장된 디렉터리.
-
-collections/: ansible-galaxy로 설치된 컬렉션들이 저장된 디렉터리.
-
-hwreport/: fetch 모듈로 수집한 하드웨어 보고서 결과 파일이 저장된 디렉터리.
-
+project/
+├── adhoc.sh                  # 애드혹 명령어 스크립트
+├── ansible.cfg               # Ansible 전역 설정
+├── collections/              # Ansible Galaxy 컬렉션 설치 경로
+├── cronjob.yml               # cron 작업 자동화 플레이북
+├── files/                    # 정적 파일 (htpasswd, .htaccess 등)
+├── group_vars/               # 그룹별 변수 파일
+├── hosts                     # 인벤토리 파일
+├── hwreport/                 # fetch 모듈로 수집된 보고서
+├── lv.yml                    # LVM 생성 플레이북
+├── lv2.yml                   # RHEL 스토리지 역할 활용 플레이북
+├── packages.yml              # 패키지 설치 플레이북
+├── playbook.yml              # 모든 플레이북을 실행하는 종합 플레이북
+├── roles/                    # 재사용 가능한 역할(role) 디렉터리
+├── secret.txt                # Ansible Vault 암호 파일
+├── time_sync2.yml            # 시간 동기화 플레이북
+├── userlist.yml              # 사용자 목록 파일
+├── users.yml                 # 사용자 계정 생성 플레이북
+├── webservers.yml            # 웹 서버 구성 플레이북
+├── webcontent.yml            # 웹 콘텐츠 디렉터리 생성 플레이북
+└── ... (기타 파일)
 ▶️ 종합 플레이북 실행
-이 프로젝트의 모든 실습 내용을 한 번에 순차적으로 실행할 수 있는 playbook.yml이 준비되어 있습니다. import_playbook 모듈을 사용해 각 기능별 플레이북을 유기적으로 연결합니다.
+이 프로젝트의 모든 실습 내용을 한 번에 순차적으로 실행할 수 있는 playbook.yml이 준비되어 있습니다.
 
 YAML
 
@@ -42,40 +54,7 @@ YAML
 
 - name: 3) 패키지 설치
   ansible.builtin.import_playbook: packages.yml
-
-- name: 4) 레드헷 시스템 역할 사용
-  ansible.builtin.import_playbook: time_sync2.yml
-
-- name: 6) 웹 서버 구성 및 확인
-  ansible.builtin.import_playbook: webservers.yml
-
-- name: 7) 역할 생성 및 사용
-  ansible.builtin.import_playbook: newrole.yml
-
-- name: 8) 논리 볼륨 생성 및 사용
-  ansible.builtin.import_playbook: lv.yml
-
-- name: 9) 호스트 파일 생성
-  ansible.builtin.import_playbook: hosts.yml
-
-- name: 10) 파일 콘텐츠 수정
-  ansible.builtin.import_playbook: issue.yml
-
-- name: 11) 웹 콘텐츠 디렉토리 생성
-  ansible.builtin.import_playbook: webcontent.yml
-
-- name: 12) 하드웨어 보고서 생성
-  ansible.builtin.import_playbook: hwreport.yml
-
-- name: 14) 사용자 계정 생성
-  ansible.builtin.import_playbook: users.yml
-
-- name: 15) FTP 서버 구성
-  ansible.builtin.import_playbook: ftp.yml
-
-- name: 16) 시스템 런레벨 변경
-  ansible.builtin.import_playbook: target.yml
-
+# ... (중략) ...
 - name: 17) 정기적인 잡 수행
   ansible.builtin.import_playbook: cronjob.yml
 ⚙️ 환경 설정 및 실행 방법
